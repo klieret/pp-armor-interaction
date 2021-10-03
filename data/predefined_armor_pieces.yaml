@@ -1,0 +1,66 @@
+- name: Abu's Assassin Armour
+  armor:
+      default:
+          - Lh
+          - Ls
+      head: []
+- name: Abu's Assassin Armour (Hood)
+  armor:
+      head:
+        - Ls
+      default: []
+- name: Helmar's Warrior Priest Armour
+  armor:
+      head: []
+      default:
+          - M
+          - Ls
+          - Ls
+      body:
+          - H
+          - H
+          - M
+          - Ls
+          - Ls
+- name: Helmar's Warrior Priest Armour (Padded Cap)
+  armor:
+      head:
+        - Ls
+      default: []
+- name: Helmar's Padded Breastplate from the Bailiff of Eberfurt
+  armor:
+      default: []
+      body:
+          - H
+          - H
+          - Ls
+- name: Helmar's Shield of Meginbald
+  armor:
+      default: []
+      body:
+          - H
+          - H
+- name: Kal's Padded Mage Robe
+  armor:
+      default:
+          - Ls
+      head: []
+- name: Naya's Dwarven Silk Shirt
+  armor:
+      default: []
+      right_arm:
+          - Ls
+      left_arm:
+          - Ls
+      body:
+          - Ls
+- name: Naya's thief armour
+  armor:
+      default:
+          - Ls
+      head: []
+- name: Naya's thief armour (Hood)
+  armor:
+      default: []
+      head:
+          - Ls
