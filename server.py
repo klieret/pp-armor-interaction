@@ -44,7 +44,7 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
 def update_damage(ev=None):
     print("UPDATING")
     damage, explanation = calculate_damage(ev)
-    if not damage:
+    if damage is None:
         damage_str = f"Invalid ({explanation})"
     else:
         damage_str = str(damage)
