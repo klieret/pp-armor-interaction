@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from typing import List, Tuple, Dict
 import yaml
 from pathlib import Path
@@ -83,21 +81,3 @@ def get_damage(
         remaining_damage = max(0, remaining_damage - damage_modifier)
         print(f"Remaining damage {remaining_damage}")
     return remaining_damage
-
-
-print(
-    get_damage(
-        15,
-        "p",
-        8,
-        get_armor_layers(
-            our_armor,
-            [
-                "Helmar's Shield of Meginbald",
-                "Helmar's Warrior Priest Armour",
-                "Helmar's Warrior Priest Armour (Padded Cap)",
-            ],
-            body_part="left_arm",
-        ),
-    )
-)
