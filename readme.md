@@ -10,10 +10,11 @@ This is a small calculator for calculating damage in a
 It is also a small experiment to try out [brython](https://brython.info/), that
 is python for client-side web programming.
 
-## How to run it
+[👉 **Go to the online calculator** 👈](https://klieret.github.io/pp-armor-interaction/index.html)
 
-This will be deployed to github pages soon, but until then clone the repository
-and start a small HTTP server
+## How to run it locally
+
+Clone the repository and start a small HTTP server
 
 ```bash
 python3 -m http.server
