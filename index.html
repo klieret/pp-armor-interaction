@@ -11,10 +11,12 @@
 <body onload="brython()">
 <script type="text/python" src="server.py"></script>
 <div>
-    <b>Damage:</b> <input id="damage" type="range" min="1" max="30" value="10">
+    <b>Damage:</b> <input id="input_damage" type="range" min="1" max="30" value="10">
+    <b><span id="value_input_damage"></span></b>
 </div>
 <div>
-    <b>Penetration:</b> <input id="penetration" type="range" min="0" max="10" value="0">
+    <b>Penetration:</b> <input id="input_penetration" type="range" min="0" max="10" value="0">
+    <b><span id="value_input_penetration"></span></b>
 </div>
 <div id="damage_type">
 <b>Damage type:</b>

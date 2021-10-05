@@ -14,8 +14,8 @@ from armor_interaction import (
 
 
 def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
-    damage = int(document["damage"].value)
-    penetration = int(document["penetration"].value)
+    damage = int(document["input_damage"].value)
+    penetration = int(document["input_penetration"].value)
     damage_type = get_damage_type()
     if not damage_type:
         return None, "Damage type not set"
@@ -114,18 +114,34 @@ def setup_hide_loading_placeholders():
         item.style.display = "none"
 
 
+def update_damage_slider(ev=None) -> None:
+    print("update slider")
+    document["value_input_damage"].html = str(document["input_damage"].value)
+
+
+def update_penetration_slider(ev=None) -> None:
+    print("update slider")
+    document["value_input_penetration"].html = str(
+        document["input_penetration"].value
+    )
+
+
 def setup():
     setup_damage_types()
     setup_armor_selection()
     setup_body_parts()
     for part in [
-        "damage",
-        "penetration",
+        "input_damage",
+        "input_penetration",
         "body_part",
         "armor_selection",
         "damage_type",
     ]:
         document[part].bind("click", update_damage)
+    document["input_damage"].bind("input", update_damage_slider)
+    document["input_penetration"].bind("input", update_penetration_slider)
+    update_damage_slider()
+    update_penetration_slider()
     update_damage()
     setup_hide_loading_placeholders()
 
