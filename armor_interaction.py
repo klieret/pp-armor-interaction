@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import pandas as pd
 from typing import List, Tuple, Dict
 import yaml
 from pathlib import Path
+import csv
 
 
 def get_predefined_armor(path=Path("data/predefined_armor_pieces.yaml")):
@@ -39,11 +39,22 @@ def get_armor_layers(armor_dict, names: List[str], body_part="default"):
 def get_armor_weapon_interaction_dict(
     path=Path("data/armor_weapon_interaction.csv"),
 ) -> Dict[Tuple[str, str, int], int]:
-    df = pd.read_csv(path)
-    return {tuple(x[:-1]): x[-1] for x in df.to_numpy()}  # type: ignore
+    dct = {}
+    with path.open() as csvfile:
+        reader = csv.reader(csvfile, delimiter=",")
+        for irow, row in enumerate(reader):
+            if irow == 0:
+                # skip header
+                continue
+            assert len(row) == 4
+            key = (row[0], row[1], int(row[2]))
+            value = int(row[3])
+            dct[key] = value
+    return dct  # type: ignore
 
 
 armor_weapon_interaction = get_armor_weapon_interaction_dict()
+print(armor_weapon_interaction)
 
 
 def get_damage(
