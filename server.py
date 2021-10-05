@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
+from typing import Optional, Tuple, List
+
 from browser import document, html
-from browser.widgets.dialog import InfoDialog
 
 from armor_interaction import (
     damage_types,
@@ -12,14 +13,21 @@ from armor_interaction import (
 )
 
 
-def calculate_damage(ev):
+def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
     damage = int(document["damage"].value)
     penetration = int(document["penetration"].value)
     damage_type = get_damage_type()
+    if not damage_type:
+        return None, "Damage type not set"
+    body_part = get_body_part()
+    if not body_part:
+        return None, "body part not set"
     armor = get_armor_selection()
     print(
         f"damage {damage} penetration {penetration} damage type {damage_type} armor {armor}!"
     )
+    assert damage_type
+    assert body_part
     result = get_damage(
         damage,
         damage_type,
@@ -27,16 +35,27 @@ def calculate_damage(ev):
         get_armor_layers(
             our_armor,
             armor,
-            body_part="left_arm",
+            body_part=body_part,
         ),
     )
-    InfoDialog("Resulting damage", str(result))
+    return result, ""
 
 
-def get_damage_type():
+def update_damage(ev=None):
+    print("UPDATING")
+    damage, error = calculate_damage(ev)
+    if not damage:
+        damage_str = f"Invalid ({error})"
+    else:
+        damage_str = str(damage)
+    document["result"].html = damage_str
+
+
+def get_damage_type() -> Optional[str]:
     for damage_type in damage_types:
         if document[f"damage_type_{damage_type}"].checked:
             return damage_type
+    return None
 
 
 def setup_damage_types():
@@ -50,7 +69,7 @@ def setup_damage_types():
         document["damage_type"] <= damage_type
 
 
-def get_armor_selection():
+def get_armor_selection() -> List[str]:
     return [
         name
         for name in our_armor
@@ -97,9 +116,17 @@ def setup_hide_loading_placeholders():
 def setup():
     setup_damage_types()
     setup_armor_selection()
-    setup_hide_loading_placeholders()
     setup_body_parts()
+    for part in [
+        "damage",
+        "penetration",
+        "body_part",
+        "armor_selection",
+        "damage_type",
+    ]:
+        document[part].bind("click", update_damage)
+    update_damage()
+    setup_hide_loading_placeholders()
 
 
 setup()
-document["evaluate"].bind("click", calculate_damage)
