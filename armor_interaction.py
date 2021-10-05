@@ -3,6 +3,16 @@ import json
 import csv
 
 
+body_parts = [
+    "head",
+    "body",
+    "left_arm",
+    "right_arm",
+    "left_leg",
+    "right_leg",
+]
+
+
 def get_predefined_armor(path="data/predefined_armor_pieces.json"):
     with open(path) as inf:
         _armor = json.load(inf)
