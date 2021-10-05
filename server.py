@@ -67,7 +67,9 @@ def setup_damage_types():
             name="damage_type",
             value=damage_type,
         )
-        document["damage_type"] <= damage_type
+        document["damage_type"] <= html.LABEL(
+            damage_type, **{"for": f"damage_type_{damage_type}"}
+        )
 
 
 def get_armor_selection() -> List[str]:
@@ -87,7 +89,7 @@ def setup_armor_selection():
             name="armor_selection",
             value=name,
         )
-        div <= name
+        div <= html.LABEL(name, **{"for": f"armor_selection_{name}"})
         document["armor_selection"] <= div
 
 
@@ -105,7 +107,9 @@ def setup_body_parts():
             name="body_part",
             value=body_part,
         )
-        document["body_part"] <= body_part
+        document["body_part"] <= html.LABEL(
+            body_part, **{"for": f"body_part_{body_part}"}
+        )
 
 
 def setup_hide_loading_placeholders():
