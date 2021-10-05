@@ -1,12 +1,12 @@
 from typing import List, Tuple, Dict
-import yaml
+import json
 from pathlib import Path
 import csv
 
 
-def get_predefined_armor(path=Path("data/predefined_armor_pieces.yaml")):
+def get_predefined_armor(path=Path("/data/predefined_armor_pieces.json")):
     with path.open() as inf:
-        _armor = yaml.load(inf, Loader=yaml.SafeLoader)
+        _armor = json.load(inf)
     return {armor["name"]: armor for armor in _armor}
 
 
@@ -35,7 +35,7 @@ def get_armor_layers(armor_dict, names: List[str], body_part="default"):
 
 
 def get_armor_weapon_interaction_dict(
-    path=Path("data/armor_weapon_interaction.csv"),
+    path=Path("/data/armor_weapon_interaction.csv"),
 ) -> Dict[Tuple[str, str, int], int]:
     dct = {}
     with path.open() as csvfile:
@@ -52,7 +52,8 @@ def get_armor_weapon_interaction_dict(
 
 
 armor_weapon_interaction = get_armor_weapon_interaction_dict()
-print(armor_weapon_interaction)
+damage_types = [x[0] for x in armor_weapon_interaction.keys()]
+armor_types = [x[1] for x in armor_weapon_interaction.keys()]
 
 
 def get_damage(

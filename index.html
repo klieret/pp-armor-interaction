@@ -1,0 +1,23 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js">
+    </script>
+</head>
+
+<body onload="brython()">
+<script type="text/python" src="server.py"></script>
+<p>Damage:</p>
+<input id="damage" type="range" min="1" max="30" value="10">
+<p>Penetration:</p>
+<input id="penetration" type="range" min="0" max="10" value="0">
+<div id="damage_type">
+
+</div>
+<button id="evaluate">Evaluate!</button>
+</body>
+
+</html>
