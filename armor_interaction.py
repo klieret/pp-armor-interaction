@@ -1,11 +1,10 @@
 from typing import List, Tuple, Dict
 import json
-from pathlib import Path
 import csv
 
 
-def get_predefined_armor(path=Path("/data/predefined_armor_pieces.json")):
-    with path.open() as inf:
+def get_predefined_armor(path="data/predefined_armor_pieces.json"):
+    with open(path) as inf:
         _armor = json.load(inf)
     return {armor["name"]: armor for armor in _armor}
 
@@ -35,11 +34,11 @@ def get_armor_layers(armor_dict, names: List[str], body_part="default"):
 
 
 def get_armor_weapon_interaction_dict(
-    path=Path("/data/armor_weapon_interaction.csv"),
+    path="data/armor_weapon_interaction.csv",
 ) -> Dict[Tuple[str, str, int], int]:
     dct = {}
-    with path.open() as csvfile:
-        reader = csv.reader(csvfile, delimiter=",")
+    with open(path) as csvfile:
+        reader = csv.reader(csvfile)
         for irow, row in enumerate(reader):
             if irow == 0:
                 # skip header
@@ -52,8 +51,8 @@ def get_armor_weapon_interaction_dict(
 
 
 armor_weapon_interaction = get_armor_weapon_interaction_dict()
-damage_types = [x[0] for x in armor_weapon_interaction.keys()]
-armor_types = [x[1] for x in armor_weapon_interaction.keys()]
+damage_types = sorted(set([x[0] for x in armor_weapon_interaction.keys()]))
+armor_types = sorted(set([x[1] for x in armor_weapon_interaction.keys()]))
 
 
 def get_damage(

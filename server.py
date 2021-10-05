@@ -15,7 +15,7 @@ def echo(ev):
 
 def setup():
     for damage_type in damage_types:
-        document["damage_type"] <= html.div(damage_type)
+        document["damage_type"] <= html.DIV(damage_type)
 
 
 setup()
