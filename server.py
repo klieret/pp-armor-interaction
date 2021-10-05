@@ -30,8 +30,15 @@ def setup_damage_types():
         document["damage_type"] <= damage_type
 
 
+def setup_hide_loading_placeholders():
+    for item in document.select(".hide_me_after_setup"):
+        print(item)
+        item.style.display = "none"
+
+
 def setup():
     setup_damage_types()
+    setup_hide_loading_placeholders()
 
 
 setup()
