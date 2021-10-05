@@ -28,7 +28,7 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
     )
     assert damage_type
     assert body_part
-    result = get_damage(
+    result, explanation_lines = get_damage(
         damage,
         damage_type,
         penetration,
@@ -38,17 +38,18 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
             body_part=body_part,
         ),
     )
-    return result, ""
+    return result, explanation_lines
 
 
 def update_damage(ev=None):
     print("UPDATING")
-    damage, error = calculate_damage(ev)
+    damage, explanation = calculate_damage(ev)
     if not damage:
-        damage_str = f"Invalid ({error})"
+        damage_str = f"Invalid ({explanation})"
     else:
         damage_str = str(damage)
     document["result"].html = damage_str
+    document["explanation"].html = "<br>\n".join(explanation.split("\n"))
 
 
 def get_damage_type() -> Optional[str]:

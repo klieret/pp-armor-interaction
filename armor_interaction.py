@@ -70,24 +70,33 @@ def get_damage(
     damage_type: str,
     penetration: int,
     armor_layers: List[Tuple[str, int]],
-):
+) -> Tuple[int, str]:
     remaining_penetration = penetration
     remaining_damage = damage
+    explanation_lines = []
     for armor_layer in armor_layers:
         armor_type, armor_points = armor_layer
-        print(f"--- {armor_type} armor ({armor_points} AP) ---")
+        explanation_lines.append(
+            f"--- {armor_type} armor ({armor_points} AP) ---"
+        )
         pen_modifier = armor_weapon_interaction[
             (damage_type, armor_type, armor_points)
         ]
-        print(f"Pen modifier {pen_modifier}")
+        explanation_lines.append(f"Pen modifier {pen_modifier}")
         remaining_penetration = max(0, remaining_penetration + pen_modifier)
-        print(f"Remaining pen after pen modifier {remaining_penetration}")
+        explanation_lines.append(
+            f"Remaining pen after pen modifier {remaining_penetration}"
+        )
         remaining_armor_points = max(0, armor_points - remaining_penetration)
-        print(f"Remaining armor points {remaining_armor_points}")
+        explanation_lines.append(
+            f"Remaining armor points {remaining_armor_points}"
+        )
         remaining_penetration = max(0, remaining_penetration - armor_points)
-        print(f"Remaining pen after armor points {remaining_penetration}")
+        explanation_lines.append(
+            f"Remaining pen after armor points {remaining_penetration}"
+        )
         damage_modifier = 2 * remaining_armor_points
-        print(f"Damage modifier {damage_modifier}")
+        explanation_lines.append(f"Damage modifier {damage_modifier}")
         remaining_damage = max(0, remaining_damage - damage_modifier)
-        print(f"Remaining damage {remaining_damage}")
-    return remaining_damage
+        explanation_lines.append(f"Remaining damage {remaining_damage}")
+    return remaining_damage, "\n".join(explanation_lines)
