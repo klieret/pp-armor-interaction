@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 
+import pytest
 
-from armor_interaction import get_damage, get_armor_layers, our_armor
+from armor_interaction import get_damage, PredefinedArmorDb
 
 
-def test_get_armor_layers():
+@pytest.fixture
+def armor_db() -> PredefinedArmorDb:
+    db = PredefinedArmorDb()
+    db.load_json()
+    return db
+
+
+def test_get_armor_layers(armor_db):
     assert (
-        get_armor_layers(
-            our_armor,
+        armor_db.get_armor_layers(
             [
                 "Helmar's Shield of Meginbald",
                 "Helmar's Warrior Priest Armour",

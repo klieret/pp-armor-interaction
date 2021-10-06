@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 import json
 import csv
 
@@ -13,34 +13,45 @@ body_parts = [
 ]
 
 
-def get_predefined_armor(path="data/predefined_armor_pieces.json"):
-    with open(path) as inf:
-        _armor = json.load(inf)
-    return {armor["name"]: armor for armor in _armor}
+class PredefinedArmorDb:
+    def __init__(self):
+        self.armor_dict: Dict[str, Any] = {}
 
+    def load_json(self, path="data/predefined_armor_pieces.json"):
+        with open(path) as inf:
+            _armor = json.load(inf)
+        self.armor_dict = {
+            **self.armor_dict,
+            **{armor["name"]: armor for armor in _armor},
+        }
 
-our_armor = get_predefined_armor()
+    @staticmethod
+    def _resolve_layer(layer_code: str) -> Tuple[str, int]:
+        if layer_code.endswith("2"):
+            return layer_code[:-1], 2
+        else:
+            return layer_code, 1
 
+    def _get_armor_layer(
+        self, name: str, body_part="default"
+    ) -> List[Tuple[str, int]]:
+        armor = self.armor_dict[name]
+        if body_part not in armor["armor"]:
+            body_part = "default"
+        return [
+            self._resolve_layer(layer) for layer in armor["armor"][body_part]
+        ]
 
-def resolve_layer(layer_code: str):
-    if layer_code.endswith("2"):
-        return layer_code[:-1], 2
-    else:
-        return layer_code, 1
+    def get_armor_layers(
+        self, names: List[str], body_part="default"
+    ) -> List[Tuple[str, int]]:
+        layers = []
+        for name in names:
+            layers.extend(self._get_armor_layer(name=name, body_part=body_part))
+        return layers
 
-
-def get_armor_layer(armor_dict, name: str, body_part="default"):
-    armor = armor_dict[name]
-    if body_part not in armor["armor"]:
-        body_part = "default"
-    return [resolve_layer(layer) for layer in armor["armor"][body_part]]
-
-
-def get_armor_layers(armor_dict, names: List[str], body_part="default"):
-    layers = []
-    for name in names:
-        layers.extend(get_armor_layer(armor_dict, name, body_part=body_part))
-    return layers
+    def __iter__(self):
+        return iter(self.armor_dict)
 
 
 def get_armor_weapon_interaction_dict(
