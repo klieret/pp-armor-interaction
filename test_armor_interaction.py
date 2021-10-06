@@ -2,7 +2,7 @@
 
 import pytest
 
-from armor_interaction import get_damage, PredefinedArmorDb
+from armor_interaction import PredefinedArmorDb, DamageCalculator
 
 
 @pytest.fixture
@@ -12,7 +12,12 @@ def armor_db() -> PredefinedArmorDb:
     return db
 
 
-def test_get_armor_layers(armor_db):
+@pytest.fixture
+def damage_calculator() -> DamageCalculator:
+    return DamageCalculator()
+
+
+def test_get_armor_layers(armor_db: PredefinedArmorDb):
     assert (
         armor_db.get_armor_layers(
             [
@@ -26,11 +31,16 @@ def test_get_armor_layers(armor_db):
     )
 
 
-def test_get_damage():
-    assert get_damage(15, "p", 8, [("H", 2), ("M", 1), ("Ls", 2)])[0] == 11
+def test_get_damage(damage_calculator: DamageCalculator):
+    assert (
+        damage_calculator.get_damage(
+            15, "p", 8, [("H", 2), ("M", 1), ("Ls", 2)]
+        )[0]
+        == 11
+    )
 
 
-def test_get_damage_no_armor():
-    assert get_damage(15, "p", 8, [])[0] == 15
-    assert get_damage(15, "p", 0, [])[0] == 15
-    assert get_damage(15, "x", 0, [])[0] == 15
+def test_get_damage_no_armor(damage_calculator: DamageCalculator):
+    assert damage_calculator.get_damage(15, "p", 8, [])[0] == 15
+    assert damage_calculator.get_damage(15, "p", 0, [])[0] == 15
+    assert damage_calculator.get_damage(15, "x", 0, [])[0] == 15

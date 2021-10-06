@@ -5,14 +5,14 @@ from typing import Optional, Tuple, List
 from browser import document, html
 
 from armor_interaction import (
-    damage_types,
-    get_damage,
-    body_parts,
+    DamageCalculator,
     PredefinedArmorDb,
+    body_parts,
 )
 
 armor_db = PredefinedArmorDb()
 armor_db.load_json()
+damage_calculator = DamageCalculator()
 
 
 def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
@@ -30,7 +30,7 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
     )
     assert damage_type
     assert body_part
-    result, explanation_lines = get_damage(
+    result, explanation_lines = damage_calculator.get_damage(
         damage,
         damage_type,
         penetration,
@@ -54,14 +54,14 @@ def update_damage(ev=None):
 
 
 def get_damage_type() -> Optional[str]:
-    for damage_type in damage_types:
+    for damage_type in damage_calculator.damage_types:
         if document[f"damage_type_{damage_type}"].checked:
             return damage_type
     return None
 
 
 def setup_damage_types():
-    for damage_type in damage_types:
+    for damage_type in damage_calculator.damage_types:
         document["damage_type"] <= html.INPUT(
             type="radio",
             id=f"damage_type_{damage_type}",
