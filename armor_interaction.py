@@ -28,7 +28,7 @@ class PredefinedArmorDb:
         }
 
     @staticmethod
-    def parser_armor_layer(layer_code: str) -> Tuple[str, int]:
+    def parse_armor_layer_string(layer_code: str) -> Tuple[str, int]:
         for armor_type in armor_types:
             for ap in range(1, len(layer_code) // len(armor_type) + 1):
                 if layer_code == armor_type * ap:
@@ -42,7 +42,7 @@ class PredefinedArmorDb:
         if body_part not in armor["armor"]:
             body_part = "default"
         return [
-            self.parser_armor_layer(layer)
+            self.parse_armor_layer_string(layer)
             for layer in armor["armor"][body_part]
         ]
 

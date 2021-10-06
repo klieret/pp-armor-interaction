@@ -65,7 +65,7 @@ def get_armor_layers():
     )
     try:
         custom_armor = [
-            PredefinedArmorDb.parser_armor_layer(ls)
+            PredefinedArmorDb.parse_armor_layer_string(ls)
             for ls in layer_specifications
         ]
     except ValueError:
