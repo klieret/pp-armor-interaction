@@ -21,23 +21,16 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
     damage_type = get_damage_type()
     if not damage_type:
         return None, "Damage type not set"
-    body_part = get_body_part()
-    if not body_part:
-        return None, "body part not set"
-    armor = get_armor_selection()
-    print(
-        f"damage {damage} penetration {penetration} damage type {damage_type} armor {armor}!"
-    )
+    armor, armor_error = get_armor_layers()
+    print(armor, armor_error)
+    if armor_error:
+        return None, armor_error
     assert damage_type
-    assert body_part
     result, explanation_lines = damage_calculator.get_damage(
-        damage,
-        damage_type,
-        penetration,
-        armor_db.get_armor_layers(
-            armor,
-            body_part=body_part,
-        ),
+        damage=damage,
+        damage_type=damage_type,
+        penetration=penetration,
+        armor_layers=armor,
     )
     return result, explanation_lines
 
@@ -60,6 +53,33 @@ def get_damage_type() -> Optional[str]:
     return None
 
 
+def get_armor_layers():
+    body_part = get_body_part()
+    armor = get_armor_selection()
+    print("ARMOR", armor)
+    layer_specifications = (
+        document["armor_selection_custom_input"]
+        .value.strip()
+        .replace(",", " ")
+        .split()
+    )
+    try:
+        custom_armor = [
+            PredefinedArmorDb.parser_armor_layer(ls)
+            for ls in layer_specifications
+        ]
+    except ValueError:
+        return None, "Couldn't parse custom armor setting string"
+    else:
+        print("Custom armor", custom_armor)
+        return (
+            armor_db.get_armor_layers(
+                armor, body_part=body_part, custom=custom_armor
+            ),
+            "",
+        )
+
+
 def setup_damage_types():
     for damage_type in damage_calculator.damage_types:
         document["damage_type"] <= html.INPUT(
@@ -67,6 +87,7 @@ def setup_damage_types():
             id=f"damage_type_{damage_type}",
             name="damage_type",
             value=damage_type,
+            checked=damage_type == "b",
         )
         document["damage_type"] <= html.LABEL(
             damage_type, **{"for": f"damage_type_{damage_type}"}
@@ -75,12 +96,14 @@ def setup_damage_types():
 
 def get_armor_selection() -> List[str]:
     return [
-        name for name in armor_db if document[f"armor_selection_{name}"].checked
+        name
+        for name in [*list(armor_db), "custom"]
+        if document[f"armor_selection_{name}"].checked
     ]
 
 
 def setup_armor_selection():
-    for name in armor_db:
+    for name in [*list(armor_db), "custom"]:
         div = html.DIV()
         div <= html.INPUT(
             type="checkbox",
@@ -89,6 +112,8 @@ def setup_armor_selection():
             value=name,
         )
         div <= html.LABEL(name, **{"for": f"armor_selection_{name}"})
+        if name == "custom":
+            div <= html.INPUT(id="armor_selection_custom_input")
         document["armor_selection"] <= div
 
 
@@ -105,6 +130,7 @@ def setup_body_parts():
             id=f"body_part_{body_part}",
             name="body_part",
             value=body_part,
+            checked=body_part == "body",
         )
         document["body_part"] <= html.LABEL(
             body_part, **{"for": f"body_part_{body_part}"}
@@ -143,6 +169,8 @@ def setup():
         document[part].bind("click", update_damage)
     document["input_damage"].bind("input", update_damage_slider)
     document["input_penetration"].bind("input", update_penetration_slider)
+    for event in ["keydown", "paste", "input"]:
+        document["armor_selection_custom_input"].bind(event, update_damage)
     update_damage_slider()
     update_penetration_slider()
     update_damage()
