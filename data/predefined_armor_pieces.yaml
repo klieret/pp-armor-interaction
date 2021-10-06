@@ -14,11 +14,11 @@
       head: []
       default:
           - M
-          - Ls2
+          - LsLs
       body:
-          - H2
+          - HH
           - M
-          - Ls2
+          - LsLs
 - name: Helmar's Warrior Priest Armour (Padded Cap)
   armor:
       head:
@@ -28,15 +28,15 @@
   armor:
       default: []
       body:
-          - H2
+          - HH
           - Ls
 - name: Helmar's Shield of Meginbald
   armor:
       default: []
       body:
-          - H2
+          - HH
       left_arm:
-          - H2
+          - HH
 - name: Kal's Padded Mage Robe
   armor:
       default:

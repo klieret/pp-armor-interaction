@@ -12,6 +12,8 @@ body_parts = [
     "right_leg",
 ]
 
+armor_types = ["Ls", "Lh", "M", "H"]
+
 
 class PredefinedArmorDb:
     def __init__(self):
@@ -27,10 +29,11 @@ class PredefinedArmorDb:
 
     @staticmethod
     def _resolve_layer(layer_code: str) -> Tuple[str, int]:
-        if layer_code.endswith("2"):
-            return layer_code[:-1], 2
-        else:
-            return layer_code, 1
+        for armor_type in armor_types:
+            for ap in range(1, len(layer_code) // len(armor_type) + 1):
+                if layer_code == armor_type * ap:
+                    return (armor_type, ap)
+        raise ValueError(f"Doesn't seem like a valid armor code: {layer_code}")
 
     def _get_armor_layers(
         self, name: str, body_part="default"

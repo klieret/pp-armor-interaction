@@ -24,12 +24,12 @@
             "head": [],
             "default": [
                 "M",
-                "Ls2"
+                "LsLs"
             ],
             "body": [
-                "H2",
+                "HH",
                 "M",
-                "Ls2"
+                "LsLs"
             ]
         }
     },
@@ -47,7 +47,7 @@
         "armor": {
             "default": [],
             "body": [
-                "H2",
+                "HH",
                 "Ls"
             ]
         }
@@ -57,10 +57,10 @@
         "armor": {
             "default": [],
             "body": [
-                "H2"
+                "HH"
             ],
             "left_arm": [
-                "H2"
+                "HH"
             ]
         }
     },
