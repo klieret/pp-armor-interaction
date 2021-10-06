@@ -9,6 +9,19 @@
       head:
         - Ls
       default: []
+- name: Helmar's Shield of Meginbald
+  armor:
+      default: []
+      body:
+          - HH
+      left_arm:
+          - HH
+- name: Helmar's Padded Breastplate from the Bailiff of Eberfurt
+  armor:
+      default: []
+      body:
+          - HH
+          - Ls
 - name: Helmar's Warrior Priest Armour
   armor:
       head: []
@@ -24,33 +37,11 @@
       head:
         - Ls
       default: []
-- name: Helmar's Padded Breastplate from the Bailiff of Eberfurt
-  armor:
-      default: []
-      body:
-          - HH
-          - Ls
-- name: Helmar's Shield of Meginbald
-  armor:
-      default: []
-      body:
-          - HH
-      left_arm:
-          - HH
 - name: Kal's Padded Mage Robe
   armor:
       default:
           - Ls
       head: []
-- name: Naya's Dwarven Silk Shirt
-  armor:
-      default: []
-      right_arm:
-          - Ls
-      left_arm:
-          - Ls
-      body:
-          - Ls
 - name: Naya's thief armour
   armor:
       default:
@@ -60,4 +51,13 @@
   armor:
       default: []
       head:
+          - Ls
+- name: Naya's Dwarven Silk Shirt
+  armor:
+      default: []
+      right_arm:
+          - Ls
+      left_arm:
+          - Ls
+      body:
           - Ls
