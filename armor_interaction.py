@@ -3,16 +3,24 @@ import json
 import csv
 
 
-body_parts = [
-    "head",
-    "body",
-    "left_arm",
-    "right_arm",
-    "left_leg",
-    "right_leg",
-]
+body_parts = {
+    "head": "head",
+    "body": "body",
+    "left_arm": "left arm",
+    "right_arm": "right arm",
+    "left_leg": "left leg",
+    "right_leg": "right leg",
+}
 
 armor_types = ["Ls", "Lh", "M", "H"]
+
+damage_types = {
+    "b": "bludgeoning",
+    "e": "explosive",
+    "p": "piercing",
+    "s": "slicing",
+    "x": "energy",
+}
 
 
 class PredefinedArmorDb:
@@ -115,12 +123,6 @@ class DamageCalculator:
                 key = (row[0], row[1], int(row[2]))
                 value = int(row[3])
                 self.armor_weapon_interaction[key] = value
-        self.damage_types = sorted(
-            set([x[0] for x in self.armor_weapon_interaction.keys()])
-        )
-        self.armor_types = sorted(
-            set([x[1] for x in self.armor_weapon_interaction.keys()])
-        )
 
     def get_damage(
         self,

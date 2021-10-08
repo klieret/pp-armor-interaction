@@ -8,6 +8,7 @@ from armor_interaction import (
     DamageCalculator,
     PredefinedArmorDb,
     body_parts,
+    damage_types,
 )
 
 armor_db = PredefinedArmorDb()
@@ -50,7 +51,7 @@ def update_damage(ev=None):
 
 
 def get_damage_type() -> Optional[str]:
-    for damage_type in damage_calculator.damage_types:
+    for damage_type in damage_types:
         if document[f"damage_type_{damage_type}"].checked:
             return damage_type
     return None
@@ -82,7 +83,7 @@ def get_armor_layers():
 
 
 def setup_damage_types():
-    for damage_type in damage_calculator.damage_types:
+    for damage_type, damage_type_full_name in damage_types.items():
         document["damage_type"] <= html.INPUT(
             type="radio",
             id=f"damage_type_{damage_type}",
@@ -91,7 +92,7 @@ def setup_damage_types():
             checked=damage_type == "b",
         )
         document["damage_type"] <= html.LABEL(
-            damage_type, **{"for": f"damage_type_{damage_type}"}
+            damage_type_full_name, **{"for": f"damage_type_{damage_type}"}
         )
 
 
@@ -126,7 +127,7 @@ def get_body_part():
 
 
 def setup_body_parts():
-    for body_part in body_parts:
+    for body_part, body_part_full_name in body_parts.items():
         document["body_part"] <= html.INPUT(
             type="radio",
             id=f"body_part_{body_part}",
@@ -135,23 +136,20 @@ def setup_body_parts():
             checked=body_part == "body",
         )
         document["body_part"] <= html.LABEL(
-            body_part, **{"for": f"body_part_{body_part}"}
+            body_part_full_name, **{"for": f"body_part_{body_part}"}
         )
 
 
 def setup_hide_loading_placeholders():
     for item in document.select(".hide_me_after_setup"):
-        print(item)
         item.style.display = "none"
 
 
 def update_damage_slider(ev=None) -> None:
-    print("update slider")
     document["value_input_damage"].html = str(document["input_damage"].value)
 
 
 def update_penetration_slider(ev=None) -> None:
-    print("update slider")
     document["value_input_penetration"].html = str(
         document["input_penetration"].value
     )

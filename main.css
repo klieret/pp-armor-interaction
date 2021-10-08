@@ -142,3 +142,8 @@ h3{
   margin-bottom: 20px;
   text-align: center;
 }
+
+details {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+}

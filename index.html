@@ -7,9 +7,11 @@
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link href="main.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 </head>
 
 <body onload="brython()">
+<a class="github-fork-ribbon" href="https://github.com/klieret/pp-armor-interaction" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <script type="text/python" src="server.py"></script>
 <div class="stat-block">
     <hr class="orange-border" />
@@ -55,6 +57,17 @@
         You currently have the following armor layers:
         <span id="armor_selection_result"><span class="hide_me_after_setup">Loading...</span></span>
     </div>
+    <details>
+        <summary>Explanation</summary>
+        There are 3 basic types of armour:
+        <col>
+            <li>Light: fabric and leather of different origin, shape and stiffness. Subdivided in light hard (Ls) and light soft (Lh)</li>
+            <li>Medium (M): small plates or rings of metal, wood or bone with several gaps in between)</li>
+            <li>Heavy (H): shaped plates of metal, wood or bone with few gaps in between.) </li>
+        </ol>
+        In the above specification the armor points are encoded by repeating the type.
+        E.g. <code>MM</code> means two armor points of medium armor, <code>Ls</code> is one level of light soft armor.
+    </details>
     <div id="result_div">
     <h3>Result</h3>
     <div class="result_area">
