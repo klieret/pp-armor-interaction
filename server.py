@@ -22,9 +22,12 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
     if not damage_type:
         return None, "Damage type not set"
     armor, armor_error = get_armor_layers()
-    print(armor, armor_error)
     if armor_error:
+        document["armor_selection_result"].html = armor_error
         return None, armor_error
+    document[
+        "armor_selection_result"
+    ].html = armor_db.armor_layers_to_string_representation(armor)
     assert damage_type
     result, explanation_lines = damage_calculator.get_damage(
         damage=damage,

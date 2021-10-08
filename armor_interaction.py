@@ -35,6 +35,29 @@ class PredefinedArmorDb:
                     return (armor_type, ap)
         raise ValueError(f"Doesn't seem like a valid armor code: {layer_code}")
 
+    @staticmethod
+    def armor_layer_to_string_representation(
+        armor_type: str, armor_points: int
+    ) -> str:
+        assert armor_points >= 1
+        return armor_type * armor_points
+
+    @staticmethod
+    def armor_layers_to_string_representation(
+        layers: List[Tuple[str, int]]
+    ) -> str:
+        if layers:
+            return " ".join(
+                [
+                    PredefinedArmorDb.armor_layer_to_string_representation(
+                        at, ap
+                    )
+                    for at, ap in layers
+                ]
+            )
+        else:
+            return "No layers."
+
     def _get_armor_layers(
         self, name: str, body_part="default"
     ) -> List[Tuple[str, int]]:
