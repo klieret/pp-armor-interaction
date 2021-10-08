@@ -126,3 +126,18 @@ h3{
     margin: 20px 0;
   }
 }
+
+#result {
+  font-size: 50px;
+  display: inline;
+}
+
+.hide_me_after_setup {
+  font-size:  12px;
+}
+
+.result_area {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}

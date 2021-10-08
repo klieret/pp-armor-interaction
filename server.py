@@ -113,6 +113,7 @@ def setup_armor_selection():
         )
         div <= html.LABEL(name, **{"for": f"armor_selection_{name}"})
         if name == "custom":
+            div <= " "
             div <= html.INPUT(id="armor_selection_custom_input")
         document["armor_selection"] <= div
 
