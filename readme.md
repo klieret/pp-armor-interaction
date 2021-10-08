@@ -22,3 +22,33 @@ python3 -m http.server
 ```
 
 and open the link that is displayed.
+
+## The algorithm
+
+Given a table that calculates penetration modifiers based on damage type,
+armor type and armor points, the resulting damage is calculated as
+
+```
+algorithm calculate-damage is
+    input: damage type (string),
+           damage (int >= 0),
+           penetration (int >= 0),
+           armor
+    output: damage taken
+
+    remaining penetration ← penetration
+    remaining damage ← damage
+    for each armor layer (string armor type, int armor points) in armor do
+        penetration modifier ← looked up in a table based on (damage type, armor type, armor points)
+        remaining penetration ← max(0, remaining penetration - penetration modifier)
+        remaining armor points ← max(0, armor points - remaining penetration)
+        remaining penetration ← max(0, remaining penetration - armor points)
+        remaining damage ← max(0, remaining damage - 2*remaining armor points)
+    return remaining damage
+```
+
+## License
+
+[![License](https://img.shields.io/github/license/klieret/pp-armor-interaction.svg)](https://github.com/klieret/pp-armor-interaction/blob/main/LICENSE.txt)
+
+The styling of the calculator is using [CSS](https://codepen.io/retractedhack/pen/gPLpWe) from [Chad Chartered](https://codepen.io/retractedhack).
