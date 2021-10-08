@@ -2,41 +2,61 @@
 
 <head>
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
 </head>
 
 <body onload="brython()">
 <script type="text/python" src="server.py"></script>
-<div>
-    <b>Damage:</b> <input id="input_damage" type="range" min="1" max="30" value="10">
-    <b><span id="value_input_damage"></span></b>
-</div>
-<div>
-    <b>Penetration:</b> <input id="input_penetration" type="range" min="0" max="10" value="0">
-    <b><span id="value_input_penetration"></span></b>
-</div>
-<div id="damage_type">
-<b>Damage type:</b>
-    <span class="hide_me_after_setup">Loading...</span>
-</div>
-<div id="body_part">
-<b>Body part:</b>
-    <span class="hide_me_after_setup">Loading...</span>
-</div>
-<div id="armor_selection">
-<b>Armor:</b> (note: armor layers are applied in the order given here from outer most layer to inner most)
-
-</div>
-<div id="result_div">
-<b>Result:</b>
-<span id="result"><span class="hide_me_after_setup">Loading...</span></span>
-<details>
-    <summary>Explanation</summary>
-    <div id="explanation"><span class="hide_me_after_setup">Loading...</span></div>
-</details>
+<div class="stat-block">
+    <hr class="orange-border" />
+    <div class="creature-heading">
+        <h1>Weapon armor interaction</h1>
+        <!-- <h2></h2> -->
+    </div>
+    <h3>Incoming damage</h3>
+    <div class="property-line">
+        <h4>Damage:</h4>
+        <p>
+            <input id="input_damage" type="range" min="1" max="30" value="10">
+            <span id="value_input_damage"></span>
+        </p>
+    </div>
+    <div class="property-line">
+        <h4>Penetration:</h4>
+        <p>
+            <input id="input_penetration" type="range" min="0" max="10" value="0">
+            <span id="value_input_penetration"></span>
+        </p>
+    </div>
+    <div class="property-line">
+        <h4>Damage type:</h4>
+        <p  id="damage_type">
+            <span class="hide_me_after_setup">Loading...</span>
+        </p>
+    </div>
+    <div class="property-line">
+        <h4>Body part hit:</h4>
+        <p  id="body_part">
+            <span class="hide_me_after_setup">Loading...</span>
+        </p>
+    </div>
+    <h3>Armor</h3>
+    <div id="armor_selection">
+        (note: armor layers are applied in the order given here from outer most layer to inner most)
+    </div>
+    <div id="result_div">
+    <h3>Result</h3>
+    <span id="result"><span class="hide_me_after_setup">Loading...</span></span>
+    <details>
+        <summary>Explanation</summary>
+        <div id="explanation"><span class="hide_me_after_setup">Loading...</span></div>
+    </details>
+    </div>
+    <hr class="orange-border bottom" />
 </div>
 </body>
 
