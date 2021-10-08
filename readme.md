@@ -7,10 +7,11 @@
 
 This is a small calculator for calculating damage in a
 [pen & paper RPG](https://en.wikipedia.org/wiki/Tabletop_role-playing_game).
-It is also a small experiment to try out [brython](https://brython.info/), that
-is python for client-side web programming.
+It is also a small experiment to try out client-side web programming with [brython](https://brython.info/).
 
 [👉 **Go to the online calculator** 👈](https://klieret.github.io/pp-armor-interaction/index.html)
+
+[![screenshot](readme_assets/scrot.png)](https://klieret.github.io/pp-armor-interaction/index.html)
 
 ## How to run it locally
 
