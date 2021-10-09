@@ -160,15 +160,16 @@ def setup():
     setup_armor_selection()
     setup_body_parts()
     for part in [
-        "input_damage",
-        "input_penetration",
         "body_part",
         "armor_selection",
         "damage_type",
     ]:
         document[part].bind("click", update_damage)
-    document["input_damage"].bind("input", update_damage_slider)
-    document["input_penetration"].bind("input", update_penetration_slider)
+    for event in ["input", "change"]:
+        document["input_damage"].bind(event, update_damage)
+        document["input_damage"].bind(event, update_damage_slider)
+        document["input_penetration"].bind(event, update_damage)
+        document["input_penetration"].bind(event, update_penetration_slider)
     for event in ["keydown", "paste", "input"]:
         document["armor_selection_custom_input"].bind(event, update_damage)
     update_damage_slider()
