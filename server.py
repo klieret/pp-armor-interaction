@@ -66,20 +66,21 @@ def get_armor_layers():
         .replace(",", " ")
         .split()
     )
-    try:
-        custom_armor = [
-            PredefinedArmorDb.parse_armor_layer_string(ls)
-            for ls in layer_specifications
-        ]
-    except ValueError:
-        return None, "Couldn't parse custom armor setting string"
-    else:
-        return (
-            armor_db.get_armor_layers(
-                armor, body_part=body_part, custom=custom_armor
-            ),
-            "",
-        )
+    custom_armor = None
+    if document["armor_selection_custom"].checked:
+        try:
+            custom_armor = [
+                PredefinedArmorDb.parse_armor_layer_string(ls)
+                for ls in layer_specifications
+            ]
+        except ValueError:
+            return None, "Couldn't parse custom armor setting string"
+    return (
+        armor_db.get_armor_layers(
+            armor, body_part=body_part, custom=custom_armor
+        ),
+        "",
+    )
 
 
 def setup_damage_types():
