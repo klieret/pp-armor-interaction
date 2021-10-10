@@ -60,14 +60,14 @@ def get_damage_type() -> Optional[str]:
 def get_armor_layers():
     body_part = get_body_part()
     armor = get_armor_selection()
-    layer_specifications = (
-        document["armor_selection_custom_input"]
-        .value.strip()
-        .replace(",", " ")
-        .split()
-    )
     custom_armor = None
-    if document["armor_selection_custom"].checked:
+    if "custom" in armor:
+        layer_specifications = (
+            document["armor_selection_custom_input"]
+            .value.strip()
+            .replace(",", " ")
+            .split()
+        )
         try:
             custom_armor = [
                 PredefinedArmorDb.parse_armor_layer_string(ls)
