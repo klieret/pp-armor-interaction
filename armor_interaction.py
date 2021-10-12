@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, NamedTuple
 import json
 import csv
 
@@ -23,6 +23,11 @@ damage_types = {
 }
 
 
+class ArmorLayer(NamedTuple):
+    armor_type: str
+    armor_points: int
+
+
 class PredefinedArmorDb:
     def __init__(self):
         self.armor_dict: Dict[str, Any] = {}
@@ -36,31 +41,27 @@ class PredefinedArmorDb:
         }
 
     @staticmethod
-    def parse_armor_layer_string(layer_code: str) -> Tuple[str, int]:
+    def parse_armor_layer_string(layer_code: str) -> ArmorLayer:
         for armor_type in armor_types:
             for ap in range(1, len(layer_code) // len(armor_type) + 1):
                 if layer_code == armor_type * ap:
-                    return (armor_type, ap)
+                    return ArmorLayer(armor_type=armor_type, armor_points=ap)
         raise ValueError(f"Doesn't seem like a valid armor code: {layer_code}")
 
     @staticmethod
-    def armor_layer_to_string_representation(
-        armor_type: str, armor_points: int
-    ) -> str:
-        assert armor_points >= 1
-        return armor_type * armor_points
+    def armor_layer_to_string_representation(armor_layer: ArmorLayer) -> str:
+        assert armor_layer.armor_points >= 1
+        return armor_layer.armor_type * armor_layer.armor_points
 
     @staticmethod
-    def armor_layers_to_string_representation(
-        layers: List[Tuple[str, int]]
-    ) -> str:
+    def armor_layers_to_string_representation(layers: List[ArmorLayer]) -> str:
         if layers:
             return " ".join(
                 [
                     PredefinedArmorDb.armor_layer_to_string_representation(
-                        at, ap
+                        layer
                     )
-                    for at, ap in layers
+                    for layer in layers
                 ]
             )
         else:
@@ -68,13 +69,13 @@ class PredefinedArmorDb:
 
     def _get_armor_layers(
         self, name: str, body_part="default"
-    ) -> List[Tuple[str, int]]:
+    ) -> List[ArmorLayer]:
         armor = self.armor_dict[name]
         if body_part not in armor["armor"]:
             body_part = "default"
         return [
-            self.parse_armor_layer_string(layer)
-            for layer in armor["armor"][body_part]
+            self.parse_armor_layer_string(layer_code)
+            for layer_code in armor["armor"][body_part]
         ]
 
     def get_armor_layers(
@@ -82,7 +83,7 @@ class PredefinedArmorDb:
         names: List[str],
         body_part="default",
         custom=None,
-    ) -> List[Tuple[str, int]]:
+    ) -> List[ArmorLayer]:
         """
 
         Args:
@@ -101,7 +102,6 @@ class PredefinedArmorDb:
                 layers.extend(
                     self._get_armor_layers(name=name, body_part=body_part)
                 )
-        print(layers)
         return layers
 
     def __iter__(self):
@@ -129,36 +129,31 @@ class DamageCalculator:
         damage: int,
         damage_type: str,
         penetration: int,
-        armor_layers: List[Tuple[str, int]],
+        armor_layers: List[ArmorLayer],
     ) -> Tuple[int, str]:
-        remaining_penetration = penetration
-        remaining_damage = damage
+        remaining_pen = penetration
+        remaining_dam = damage
         explanation_lines = []
         for armor_layer in armor_layers:
-            armor_type, armor_points = armor_layer
-            explanation_lines.append(
-                f"--- {armor_type} armor ({armor_points} AP) ---"
-            )
-            pen_modifier = self.armor_weapon_interaction[
-                (damage_type, armor_type, armor_points)
-            ]
+            at = armor_layer.armor_type
+            ap = armor_layer.armor_points
+            explanation_lines.append(f"--- {at} armor ({ap} AP) ---")
+            pen_modifier = self.armor_weapon_interaction[(damage_type, at, ap)]
             explanation_lines.append(f"Pen modifier {pen_modifier}")
-            remaining_penetration = max(0, remaining_penetration + pen_modifier)
+            remaining_pen = max(0, remaining_pen + pen_modifier)
             explanation_lines.append(
-                f"Remaining pen after pen modifier {remaining_penetration}"
+                f"Remaining pen after pen modifier {remaining_pen}"
             )
-            remaining_armor_points = max(
-                0, armor_points - remaining_penetration
-            )
+            remaining_armor_points = max(0, ap - remaining_pen)
             explanation_lines.append(
                 f"Remaining armor points {remaining_armor_points}"
             )
-            remaining_penetration = max(0, remaining_penetration - armor_points)
+            remaining_pen = max(0, remaining_pen - ap)
             explanation_lines.append(
-                f"Remaining pen after armor points {remaining_penetration}"
+                f"Remaining pen after armor points {remaining_pen}"
             )
             damage_modifier = 2 * remaining_armor_points
             explanation_lines.append(f"Damage modifier {damage_modifier}")
-            remaining_damage = max(0, remaining_damage - damage_modifier)
-            explanation_lines.append(f"Remaining damage {remaining_damage}")
-        return remaining_damage, "\n".join(explanation_lines)
+            remaining_dam = max(0, remaining_dam - damage_modifier)
+            explanation_lines.append(f"Remaining damage {remaining_dam}")
+        return remaining_dam, "\n".join(explanation_lines)
