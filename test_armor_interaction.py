@@ -2,7 +2,13 @@
 
 import pytest
 
-from armor_interaction import PredefinedArmorDb, DamageCalculator, ArmorLayer
+from armor_interaction import (
+    PredefinedArmorDb,
+    DamageCalculator,
+    ArmorLayer,
+    get_armor_layers_from_string_representation,
+    armor_layers_to_string_representation,
+)
 
 
 @pytest.fixture
@@ -15,6 +21,31 @@ def armor_db() -> PredefinedArmorDb:
 @pytest.fixture
 def damage_calculator() -> DamageCalculator:
     return DamageCalculator()
+
+
+def test_get_armor_layers_from_string_representation():
+    assert get_armor_layers_from_string_representation("HH") == [
+        ArmorLayer("H", 2)
+    ]
+    assert get_armor_layers_from_string_representation("") == []
+    assert get_armor_layers_from_string_representation("HH Ls") == [
+        ArmorLayer("H", 2),
+        ArmorLayer("Ls", 1),
+    ]
+    assert get_armor_layers_from_string_representation(" HH, Ls  ") == [
+        ArmorLayer("H", 2),
+        ArmorLayer("Ls", 1),
+    ]
+
+
+def test_armor_layers_to_string_representation():
+    assert (
+        armor_layers_to_string_representation(
+            [ArmorLayer("H", 2), ArmorLayer("Ls", 1)]
+        )
+        == "HH Ls"
+    )
+    assert armor_layers_to_string_representation([]) == "No layers."
 
 
 def test_armor_layer_serialization():

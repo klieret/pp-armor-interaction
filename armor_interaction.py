@@ -64,6 +64,14 @@ def armor_layers_to_string_representation(layers: List[ArmorLayer]) -> str:
         return "No layers."
 
 
+def get_armor_layers_from_string_representation(
+    string: str,
+) -> List[ArmorLayer]:
+    return [
+        ArmorLayer.from_string(ls) for ls in string.replace(",", " ").split()
+    ]
+
+
 class PredefinedArmorDb:
     def __init__(self):
         self._armor_dict: Dict[str, PredefinedArmor] = {}

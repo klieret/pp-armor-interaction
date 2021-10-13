@@ -9,8 +9,8 @@ from armor_interaction import (
     PredefinedArmorDb,
     body_parts,
     damage_types,
-    ArmorLayer,
     armor_layers_to_string_representation,
+    get_armor_layers_from_string_representation,
 )
 
 armor_db = PredefinedArmorDb()
@@ -64,16 +64,10 @@ def get_armor_layers():
     armor = get_armor_selection()
     custom_armor = None
     if "custom" in armor:
-        layer_specifications = (
-            document["armor_selection_custom_input"]
-            .value.strip()
-            .replace(",", " ")
-            .split()
-        )
         try:
-            custom_armor = [
-                ArmorLayer.from_string(ls) for ls in layer_specifications
-            ]
+            custom_armor = get_armor_layers_from_string_representation(
+                document["armor_selection_custom_input"].value.strip()
+            )
         except ValueError:
             return None, "Couldn't parse custom armor setting string"
     return (
