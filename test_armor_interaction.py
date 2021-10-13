@@ -41,6 +41,15 @@ def test_get_damage(damage_calculator: DamageCalculator):
         )[0]
         == 11
     )
+    assert (
+        damage_calculator.get_damage(
+            10,
+            "p",
+            4,
+            [ArmorLayer("H", 2)],
+        )[0]
+        == 8
+    )
 
 
 def test_get_damage_no_armor(damage_calculator: DamageCalculator):
