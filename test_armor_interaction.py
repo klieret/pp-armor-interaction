@@ -17,6 +17,14 @@ def damage_calculator() -> DamageCalculator:
     return DamageCalculator()
 
 
+def test_armor_layer_serialization():
+    test_cases = ["HH", "Ls", "H"]
+    for test_case in test_cases:
+        armor_layer = ArmorLayer.from_string(test_case)
+        assert str(armor_layer) == test_case
+        assert ArmorLayer.from_string(str(armor_layer)) == armor_layer
+
+
 def test_get_armor_layers(armor_db: PredefinedArmorDb):
     assert (
         armor_db.get_armor_layers(
