@@ -1,7 +1,8 @@
-from typing import List, Tuple, Dict, Any, NamedTuple
+from typing import List, Tuple, Dict, NamedTuple
 import json
 import csv
 
+# todo: use enums
 
 body_parts = {
     "head": "head",
@@ -28,16 +29,41 @@ class ArmorLayer(NamedTuple):
     armor_points: int
 
 
+class PredefinedArmor:
+    def __init__(
+        self, name: str, bodypart_to_layers: Dict[str, List[ArmorLayer]]
+    ):
+        self.name = name
+        self._bodypart_to_layers = bodypart_to_layers
+
+    def get_layers(self, body_part: str) -> List[ArmorLayer]:
+        if body_part not in self._bodypart_to_layers:
+            body_part = "default"
+        return self._bodypart_to_layers[body_part]
+
+
 class PredefinedArmorDb:
     def __init__(self):
-        self.armor_dict: Dict[str, Any] = {}
+        self.armor_dict: Dict[str, PredefinedArmor] = {}
 
     def load_json(self, path="data/predefined_armor_pieces.json"):
         with open(path) as inf:
             _armor = json.load(inf)
+        _new_armor = [
+            PredefinedArmor(
+                name=a["name"],
+                bodypart_to_layers={
+                    body_part: [
+                        self.parse_armor_layer_string(lc) for lc in layer_codes
+                    ]
+                    for body_part, layer_codes in a["armor"].items()
+                },
+            )
+            for a in _armor
+        ]
         self.armor_dict = {
             **self.armor_dict,
-            **{armor["name"]: armor for armor in _armor},
+            **{armor.name: armor for armor in _new_armor},
         }
 
     @staticmethod
@@ -70,13 +96,7 @@ class PredefinedArmorDb:
     def _get_armor_layers(
         self, name: str, body_part="default"
     ) -> List[ArmorLayer]:
-        armor = self.armor_dict[name]
-        if body_part not in armor["armor"]:
-            body_part = "default"
-        return [
-            self.parse_armor_layer_string(layer_code)
-            for layer_code in armor["armor"][body_part]
-        ]
+        return self.armor_dict[name].get_layers(body_part=body_part)
 
     def get_armor_layers(
         self,
