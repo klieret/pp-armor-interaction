@@ -9,6 +9,7 @@ from armor_interaction import (
     PredefinedArmorDb,
     body_parts,
     damage_types,
+    ArmorLayer,
 )
 
 armor_db = PredefinedArmorDb()
@@ -70,8 +71,7 @@ def get_armor_layers():
         )
         try:
             custom_armor = [
-                PredefinedArmorDb.parse_armor_layer_string(ls)
-                for ls in layer_specifications
+                ArmorLayer.from_string(ls) for ls in layer_specifications
             ]
         except ValueError:
             return None, "Couldn't parse custom armor setting string"

@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict, NamedTuple
+from typing import List, Tuple, Dict
 import json
 import csv
 
@@ -24,9 +24,24 @@ damage_types = {
 }
 
 
-class ArmorLayer(NamedTuple):
-    armor_type: str
-    armor_points: int
+class ArmorLayer:
+    def __init__(self, armor_type: str, armor_points: int):
+        self.armor_type = armor_type
+        self.armor_points = armor_points
+
+    @classmethod
+    def from_string(cls, layer_code: str):
+        for armor_type in armor_types:
+            for ap in range(1, len(layer_code) // len(armor_type) + 1):
+                if layer_code == armor_type * ap:
+                    return cls(armor_type=armor_type, armor_points=ap)
+        raise ValueError(f"Doesn't seem like a valid armor code: {layer_code}")
+
+    def __repr__(self):
+        return self.armor_type * self.armor_points
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
 
 class PredefinedArmor:
@@ -54,7 +69,7 @@ class PredefinedArmorDb:
                 name=a["name"],
                 bodypart_to_layers={
                     body_part: [
-                        self.parse_armor_layer_string(lc) for lc in layer_codes
+                        ArmorLayer.from_string(lc) for lc in layer_codes
                     ]
                     for body_part, layer_codes in a["armor"].items()
                 },
@@ -67,29 +82,9 @@ class PredefinedArmorDb:
         }
 
     @staticmethod
-    def parse_armor_layer_string(layer_code: str) -> ArmorLayer:
-        for armor_type in armor_types:
-            for ap in range(1, len(layer_code) // len(armor_type) + 1):
-                if layer_code == armor_type * ap:
-                    return ArmorLayer(armor_type=armor_type, armor_points=ap)
-        raise ValueError(f"Doesn't seem like a valid armor code: {layer_code}")
-
-    @staticmethod
-    def armor_layer_to_string_representation(armor_layer: ArmorLayer) -> str:
-        assert armor_layer.armor_points >= 1
-        return armor_layer.armor_type * armor_layer.armor_points
-
-    @staticmethod
     def armor_layers_to_string_representation(layers: List[ArmorLayer]) -> str:
         if layers:
-            return " ".join(
-                [
-                    PredefinedArmorDb.armor_layer_to_string_representation(
-                        layer
-                    )
-                    for layer in layers
-                ]
-            )
+            return " ".join([str(layer) for layer in layers])
         else:
             return "No layers."
 

@@ -27,7 +27,7 @@ def test_get_armor_layers(armor_db: PredefinedArmorDb):
             ],
             body_part="left_arm",
         )
-        == [("H", 2), ("M", 1), ("Ls", 2)]
+        == [ArmorLayer("H", 2), ArmorLayer("M", 1), ArmorLayer("Ls", 2)]
     )
 
 
