@@ -10,6 +10,7 @@ from armor_interaction import (
     body_parts,
     damage_types,
     ArmorLayer,
+    armor_layers_to_string_representation,
 )
 
 armor_db = PredefinedArmorDb()
@@ -29,7 +30,7 @@ def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
         return None, armor_error
     document[
         "armor_selection_result"
-    ].html = armor_db.armor_layers_to_string_representation(armor)
+    ].html = armor_layers_to_string_representation(armor)
     assert damage_type
     result, explanation_lines = damage_calculator.get_damage(
         damage=damage,
@@ -107,7 +108,7 @@ def get_armor_selection() -> List[str]:
 
 def setup_armor_selection():
     for name in [*list(armor_db), "custom"]:
-        div = html.DIV()
+        div = html.DIV(id=f"div_{name}")
         div <= html.INPUT(
             type="checkbox",
             id=f"armor_selection_{name}",
@@ -118,7 +119,18 @@ def setup_armor_selection():
         if name == "custom":
             div <= " "
             div <= html.INPUT(id="armor_selection_custom_input")
+        else:
+            div <= " "
+            div <= html.SPAN(id=f"span_{name}", **{"class": ["armor_mirror"]})
         document["armor_selection"] <= div
+
+
+def update_armor_selection_mirror(*ev):
+    for name, armor in armor_db.items():
+        armor_layer_str = armor_layers_to_string_representation(
+            armor.get_layers(body_part=get_body_part())
+        )
+        document[f"span_{name}"].html = f"({armor_layer_str})"
 
 
 def get_body_part():
@@ -166,6 +178,7 @@ def setup():
         "damage_type",
     ]:
         document[part].bind("click", update_damage)
+    document["body_part"].bind("click", update_armor_selection_mirror)
     for event in ["input", "change"]:
         document["input_damage"].bind(event, update_damage)
         document["input_damage"].bind(event, update_damage_slider)
@@ -177,6 +190,7 @@ def setup():
     update_penetration_slider()
     update_damage()
     setup_hide_loading_placeholders()
+    update_armor_selection_mirror()
 
 
 setup()

@@ -57,6 +57,13 @@ class PredefinedArmor:
         return self._bodypart_to_layers[body_part]
 
 
+def armor_layers_to_string_representation(layers: List[ArmorLayer]) -> str:
+    if layers:
+        return " ".join([str(layer) for layer in layers])
+    else:
+        return "No layers."
+
+
 class PredefinedArmorDb:
     def __init__(self):
         self._armor_dict: Dict[str, PredefinedArmor] = {}
@@ -80,13 +87,6 @@ class PredefinedArmorDb:
             **self._armor_dict,
             **{armor.name: armor for armor in _new_armor},
         }
-
-    @staticmethod
-    def armor_layers_to_string_representation(layers: List[ArmorLayer]) -> str:
-        if layers:
-            return " ".join([str(layer) for layer in layers])
-        else:
-            return "No layers."
 
     def get_armor_layers(
         self,
@@ -117,6 +117,9 @@ class PredefinedArmorDb:
 
     def __getitem__(self, item):
         return self._armor_dict[item]
+
+    def items(self):
+        return self._armor_dict.items()
 
 
 class DamageCalculator:
