@@ -88,11 +88,6 @@ class PredefinedArmorDb:
         else:
             return "No layers."
 
-    def _get_armor_layers(
-        self, name: str, body_part="default"
-    ) -> List[ArmorLayer]:
-        return self.armor_dict[name].get_layers(body_part=body_part)
-
     def get_armor_layers(
         self,
         names: List[str],
@@ -115,7 +110,7 @@ class PredefinedArmorDb:
                 layers.extend(custom)
             else:
                 layers.extend(
-                    self._get_armor_layers(name=name, body_part=body_part)
+                    self.armor_dict[name].get_layers(body_part=body_part)
                 )
         return layers
 
