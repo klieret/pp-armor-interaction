@@ -19,6 +19,25 @@
         }
     },
     {
+        "name": "Falatha's Huntress Armour",
+        "armor": {
+            "default": [
+                "Lh",
+                "Ls"
+            ],
+            "head": []
+        }
+    },
+    {
+        "name": "Falatha's Huntress Armour (Hood)",
+        "armor": {
+            "head": [
+                "Ls"
+            ],
+            "default": []
+        }
+    },
+    {
         "name": "Helmar's Shield of Meginbald",
         "armor": {
             "default": [],
