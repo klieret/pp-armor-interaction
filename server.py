@@ -193,8 +193,8 @@ def setup():
     update_damage_slider()
     update_penetration_slider()
     update_damage()
-    setup_hide_loading_placeholders()
     update_armor_selection_mirror()
 
 
 setup()
+setup_hide_loading_placeholders()
