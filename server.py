@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-from typing import Optional, Tuple, List
+import json
+from typing import Optional, Tuple, List, Any, Dict
+import collections
 
 from browser import document, html
+from browser.local_storage import storage
 
 from armor_interaction import (
     DamageCalculator,
@@ -16,6 +19,9 @@ from armor_interaction import (
 armor_db = PredefinedArmorDb()
 armor_db.load_json()
 damage_calculator = DamageCalculator()
+
+# Settings that are later written to local storage
+settings: Dict[str, Any] = collections.defaultdict(dict)
 
 
 def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
@@ -95,12 +101,36 @@ def setup_damage_types():
 
 
 def get_armor_selection() -> List[str]:
-    """Returns the name of the selected pre-configured piecues of armor"""
-    return [
+    """Returns the name of the selected pre-configured piecues of armor
+    and also saves it to local storage
+    """
+    armor_selection = [
         name
         for name in [*list(armor_db), "custom"]
         if document[f"armor_selection_{name}"].checked
     ]
+    settings["armor"] = armor_selection
+    dump_settings_local_storage()
+    return armor_selection
+
+
+def dump_settings_local_storage():
+    storage["main"] = json.dumps(settings)
+
+
+def restore_from_local_storage():
+    """Tries to set things as they were last time"""
+    if "main" not in storage:
+        print("No local storage settings")
+        return
+    settings = json.loads(storage["main"])
+    print("Restored settings")
+    print(storage["main"])
+    try:
+        for name in settings["armor"]:
+            document[f"armor_selection_{name}"].checked = True
+    except Exception as e:
+        print(f"Couldn't restore settings: {e}")
 
 
 def setup_armor_selection():
@@ -176,6 +206,7 @@ def setup():
     setup_damage_types()
     setup_armor_selection()
     setup_body_parts()
+    restore_from_local_storage()
     for part in [
         "body_part",
         "armor_selection",
