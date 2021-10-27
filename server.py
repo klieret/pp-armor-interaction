@@ -53,6 +53,7 @@ def update_damage(ev=None):
 
 
 def get_damage_type() -> Optional[str]:
+    """Returns the damage type that was selected."""
     for damage_type in damage_types:
         if document[f"damage_type_{damage_type}"].checked:
             return damage_type
@@ -79,6 +80,7 @@ def get_armor_layers():
 
 
 def setup_damage_types():
+    """Sets up radio-buttons for the different damage types"""
     for damage_type, damage_type_full_name in damage_types.items():
         document["damage_type"] <= html.INPUT(
             type="radio",
@@ -93,6 +95,7 @@ def setup_damage_types():
 
 
 def get_armor_selection() -> List[str]:
+    """Returns the name of the selected pre-configured piecues of armor"""
     return [
         name
         for name in [*list(armor_db), "custom"]
@@ -101,6 +104,9 @@ def get_armor_selection() -> List[str]:
 
 
 def setup_armor_selection():
+    """Sets up checkboxes for each pre-configured piece of armor and an
+    additional custom field
+    """
     for name in [*list(armor_db), "custom"]:
         div = html.DIV(id=f"div_{name}")
         div <= html.INPUT(
@@ -120,6 +126,9 @@ def setup_armor_selection():
 
 
 def update_armor_selection_mirror(*ev):
+    """For each of the selectable armors. Updates a small text field that shows
+    the actual armor layers that this armor provides at the selected body part
+    """
     for name, armor in armor_db.items():
         armor_layer_str = armor_layers_to_string_representation(
             armor.get_layers(body_part=get_body_part())
@@ -148,6 +157,7 @@ def setup_body_parts():
 
 
 def setup_hide_loading_placeholders():
+    """Hide 'Loading...' placeholders that show up by default"""
     for item in document.select(".hide_me_after_setup"):
         item.style.display = "none"
 
