@@ -69,14 +69,18 @@ def get_damage_type() -> Optional[str]:
 def get_armor_layers():
     body_part = get_body_part()
     armor = get_armor_selection()
+    settings["armor"] = armor
+    custom_armor_input = document["armor_selection_custom_input"].value.strip()
+    settings["custom_armor"] = custom_armor_input
     custom_armor = None
     if "custom" in armor:
         try:
             custom_armor = get_armor_layers_from_string_representation(
-                document["armor_selection_custom_input"].value.strip()
+                custom_armor_input
             )
         except ValueError:
             return None, "Couldn't parse custom armor setting string"
+    dump_settings_local_storage()
     return (
         armor_db.get_armor_layers(
             armor, body_part=body_part, custom=custom_armor
@@ -101,17 +105,12 @@ def setup_damage_types():
 
 
 def get_armor_selection() -> List[str]:
-    """Returns the name of the selected pre-configured piecues of armor
-    and also saves it to local storage
-    """
-    armor_selection = [
+    """Returns the name of the selected pre-configured pieces"""
+    return [
         name
         for name in [*list(armor_db), "custom"]
         if document[f"armor_selection_{name}"].checked
     ]
-    settings["armor"] = armor_selection
-    dump_settings_local_storage()
-    return armor_selection
 
 
 def dump_settings_local_storage():
@@ -129,6 +128,9 @@ def restore_from_local_storage():
     try:
         for name in settings["armor"]:
             document[f"armor_selection_{name}"].checked = True
+        document["armor_selection_custom_input"].value = settings[
+            "custom_armor"
+        ]
     except Exception as e:
         print(f"Couldn't restore settings: {e}")
 
