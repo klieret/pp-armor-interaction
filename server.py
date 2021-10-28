@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import json
-from typing import Optional, Tuple, List, Any, Dict
+from typing import Optional, List, Any, Dict
 import collections
 
 from browser import document, html
@@ -14,6 +14,7 @@ from armor_interaction import (
     damage_types,
     armor_layers_to_string_representation,
     get_armor_layers_from_string_representation,
+    DamageResult,
 )
 
 armor_db = PredefinedArmorDb()
@@ -24,38 +25,37 @@ damage_calculator = DamageCalculator()
 settings: Dict[str, Any] = collections.defaultdict(dict)
 
 
-def calculate_damage(ev=None) -> Tuple[Optional[int], str]:
+def calculate_damage(ev=None) -> DamageResult:
     damage = int(document["input_damage"].value)
     penetration = int(document["input_penetration"].value)
     damage_type = get_damage_type()
     if not damage_type:
-        return None, "Damage type not set"
+        return DamageResult(None, "Damage type not set")
     armor, armor_error = get_armor_layers()
     if armor_error:
         document["armor_selection_result"].html = armor_error
-        return None, armor_error
+        return DamageResult(None, armor_error)
     document[
         "armor_selection_result"
     ].html = armor_layers_to_string_representation(armor)
     assert damage_type
-    result, explanation_lines = damage_calculator.get_damage(
+    return damage_calculator.get_damage(
         damage=damage,
         damage_type=damage_type,
         penetration=penetration,
         armor_layers=armor,
     )
-    return result, explanation_lines
 
 
 def update_damage(ev=None):
     print("UPDATING")
-    damage, explanation = calculate_damage(ev)
-    if damage is None:
+    damage = calculate_damage(ev)
+    if damage.value is None:
         damage_str = "?"
     else:
-        damage_str = str(damage)
+        damage_str = str(damage.value)
     document["result"].html = damage_str
-    document["explanation"].html = "<br>\n".join(explanation.split("\n"))
+    document["explanation"].html = "<br>\n".join(damage.explanation.split("\n"))
 
 
 def get_damage_type() -> Optional[str]:

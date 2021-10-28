@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, NamedTuple, Optional
 import json
 import csv
 
@@ -130,6 +130,11 @@ class PredefinedArmorDb:
         return self._armor_dict.items()
 
 
+class DamageResult(NamedTuple):
+    value: Optional[int]
+    explanation: str
+
+
 class DamageCalculator:
     def __init__(
         self, armor_interaction_path="data/armor_weapon_interaction.csv"
@@ -152,7 +157,7 @@ class DamageCalculator:
         damage_type: str,
         penetration: int,
         armor_layers: List[ArmorLayer],
-    ) -> Tuple[int, str]:
+    ) -> DamageResult:
         remaining_pen = penetration
         remaining_dam = damage
         explanation_lines = []
@@ -178,4 +183,6 @@ class DamageCalculator:
             explanation_lines.append(f"Damage modifier {damage_modifier}")
             remaining_dam = max(0, remaining_dam - damage_modifier)
             explanation_lines.append(f"Remaining damage {remaining_dam}")
-        return remaining_dam, "\n".join(explanation_lines)
+        return DamageResult(
+            value=remaining_dam, explanation="\n".join(explanation_lines)
+        )
