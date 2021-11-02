@@ -79,21 +79,19 @@ class PredefinedArmorDb:
     def load_json(self, path="data/predefined_armor_pieces.json"):
         with open(path) as inf:
             _armor = json.load(inf)
+        _new_armor = []
         for a in _armor:
+            bodypart_to_layers = {}
             for body_part, layer_codes in a["armor"].items():
-                print([ArmorLayer.from_string(lc) for lc in layer_codes])
-        _new_armor = [
-            PredefinedArmor(
-                name=a["name"],
-                bodypart_to_layers={
-                    body_part: [
-                        ArmorLayer.from_string(lc) for lc in layer_codes
-                    ]
-                    for body_part, layer_codes in a["armor"].items()
-                },
+                armor_layers = [
+                    ArmorLayer.from_string(lc) for lc in layer_codes
+                ]
+                bodypart_to_layers[body_part] = armor_layers
+            _new_armor.append(
+                PredefinedArmor(
+                    name=a["name"], bodypart_to_layers=bodypart_to_layers
+                )
             )
-            for a in _armor
-        ]
         self._armor_dict = {
             **self._armor_dict,
             **{armor.name: armor for armor in _new_armor},
