@@ -1,5 +1,6 @@
 # Pen & Paper Armor Interaction Calculator 🏹🛡️
 
+[![gh actions](https://github.com/klieret/pp-armor-interaction/actions/workflows/workflow.yml/badge.svg)](https://github.com/klieret/pp-armor-interaction/actions)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/klieret/pp-armor-interaction/main.svg)](https://results.pre-commit.ci/latest/github/klieret/RandomFileTree/master)
 [![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://gitmoji.dev)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
