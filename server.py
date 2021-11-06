@@ -210,7 +210,7 @@ def setup_ignored_armor_types():
             checked=False,
         )
         _ = document["ignored_armor_types"] <= html.LABEL(
-            armor_type_desc, **{"for": f"armor_type_{armor_type}"}
+            armor_type_desc, **{"for": f"ignored_armor_type_{armor_type}"}
         )
 
 
