@@ -156,7 +156,10 @@ class DamageCalculator:
         damage_type: str,
         penetration: int,
         armor_layers: List[ArmorLayer],
+        ignored_armor_types: Optional[List[str]] = None,
     ) -> DamageResult:
+        if ignored_armor_types is None:
+            ignored_armor_types = []
         remaining_pen = penetration
         remaining_dam = damage
         explanation_lines = []
@@ -164,6 +167,9 @@ class DamageCalculator:
             at = armor_layer.armor_type
             ap = armor_layer.armor_points
             explanation_lines.append(f"--- {at} armor ({ap} AP) ---")
+            if at in ignored_armor_types:
+                explanation_lines.append(f"Armor type {at} is ignored")
+                continue
             pen_modifier = self.armor_weapon_interaction[(damage_type, at, ap)]
             explanation_lines.append(f"Pen modifier {pen_modifier}")
             remaining_pen = max(0, remaining_pen + pen_modifier)
