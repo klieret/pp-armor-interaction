@@ -10,7 +10,15 @@ from selenium.common.exceptions import WebDriverException
 
 @pytest.fixture(scope="session")
 def driver():
-    return webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("start-maximized")
+    options.add_argument("disable-infobars")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--no-sandbox")
+    options.headless = True
+    return webdriver.Chrome(options=options)
 
 
 @pytest.fixture
