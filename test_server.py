@@ -45,6 +45,10 @@ def toggle_armor(driver, armor: str) -> None:
     driver.find_element_by_id(f"armor_selection_{armor}").click()
 
 
+def toggle_ignored_armor_type(driver, armor: str) -> None:
+    driver.find_element_by_id(f"ignored_armor_type_{armor}").click()
+
+
 def select_damage_type(driver, damage_type: str) -> None:
     driver.find_element_by_id(f"damage_type_{damage_type}").click()
 
@@ -126,12 +130,21 @@ def test_custom_armor(session):
 
 
 def test_custom_and_shield(session):
-    h = "Helmar's Shield of Meginbald"
-    toggle_armor(session, h)
+    toggle_armor(session, "Helmar's Shield of Meginbald")
     set_custom_armor(session, "LsLs")
     toggle_armor(session, "custom")
     assert get_armor_selection_result(session) == "HH LsLs"
     assert get_result(session) == "2"
+
+
+def test_ignored_armor_type(session):
+    toggle_armor(session, "Helmar's Warrior Priest Armour")
+    toggle_ignored_armor_type(session, "Ls")
+    assert get_result(session) == "4"
+    toggle_ignored_armor_type(session, "M")
+    assert get_result(session) == "6"
+    toggle_ignored_armor_type(session, "H")
+    assert get_result(session) == "10"
 
 
 if __name__ == "__main__":
