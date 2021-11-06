@@ -15,6 +15,7 @@ from armor_interaction import (
     armor_layers_to_string_representation,
     get_armor_layers_from_string_representation,
     DamageResult,
+    armor_types,
 )
 
 armor_db = PredefinedArmorDb()
@@ -44,6 +45,7 @@ def calculate_damage(ev=None) -> DamageResult:
         damage_type=damage_type,
         penetration=penetration,
         armor_layers=armor,
+        ignored_armor_types=get_ignored_armor_types(),
     )
 
 
@@ -64,6 +66,14 @@ def get_damage_type() -> Optional[str]:
         if document[f"damage_type_{damage_type}"].checked:
             return damage_type
     return None
+
+
+def get_ignored_armor_types() -> List[str]:
+    return [
+        armor_type
+        for armor_type in armor_types
+        if document[f"ignored_armor_type_{armor_type}"].checked
+    ]
 
 
 def get_armor_layers():
@@ -92,14 +102,14 @@ def get_armor_layers():
 def setup_damage_types():
     """Sets up radio-buttons for the different damage types"""
     for damage_type, damage_type_full_name in damage_types.items():
-        document["damage_type"] <= html.INPUT(
+        _ = document["damage_type"] <= html.INPUT(
             type="radio",
             id=f"damage_type_{damage_type}",
             name="damage_type",
             value=damage_type,
             checked=damage_type == "b",
         )
-        document["damage_type"] <= html.LABEL(
+        _ = document["damage_type"] <= html.LABEL(
             damage_type_full_name, **{"for": f"damage_type_{damage_type}"}
         )
 
@@ -141,20 +151,22 @@ def setup_armor_selection():
     """
     for name in [*list(armor_db), "custom"]:
         div = html.DIV(id=f"div_{name}")
-        div <= html.INPUT(
+        _ = div <= html.INPUT(
             type="checkbox",
             id=f"armor_selection_{name}",
             name="armor_selection",
             value=name,
         )
-        div <= html.LABEL(name, **{"for": f"armor_selection_{name}"})
+        _ = div <= html.LABEL(name, **{"for": f"armor_selection_{name}"})
         if name == "custom":
-            div <= " "
-            div <= html.INPUT(id="armor_selection_custom_input")
+            _ = div <= " "
+            _ = div <= html.INPUT(id="armor_selection_custom_input")
         else:
-            div <= " "
-            div <= html.SPAN(id=f"span_{name}", **{"class": ["armor_mirror"]})
-        document["armor_selection"] <= div
+            _ = div <= " "
+            _ = div <= html.SPAN(
+                id=f"span_{name}", **{"class": ["armor_mirror"]}
+            )
+        _ = document["armor_selection"] <= div
 
 
 def update_armor_selection_mirror(*ev):
@@ -176,15 +188,29 @@ def get_body_part():
 
 def setup_body_parts():
     for body_part, body_part_full_name in body_parts.items():
-        document["body_part"] <= html.INPUT(
+        _ = document["body_part"] <= html.INPUT(
             type="radio",
             id=f"body_part_{body_part}",
             name="body_part",
             value=body_part,
             checked=body_part == "body",
         )
-        document["body_part"] <= html.LABEL(
+        _ = document["body_part"] <= html.LABEL(
             body_part_full_name, **{"for": f"body_part_{body_part}"}
+        )
+
+
+def setup_ignored_armor_types():
+    for armor_type in armor_types:
+        _ = document["ignored_armor_types"] <= html.INPUT(
+            type="checkbox",
+            id=f"ignored_armor_type_{armor_type}",
+            name="ignored_armor_type",
+            value=armor_type,
+            checked=False,
+        )
+        _ = document["ignored_armor_types"] <= html.LABEL(
+            armor_type, **{"for": f"armor_type_{armor_type}"}
         )
 
 
@@ -208,11 +234,13 @@ def setup():
     setup_damage_types()
     setup_armor_selection()
     setup_body_parts()
+    setup_ignored_armor_types()
     restore_from_local_storage()
     for part in [
         "body_part",
         "armor_selection",
         "damage_type",
+        "ignored_armor_types",
     ]:
         document[part].bind("click", update_damage)
     document["body_part"].bind("click", update_armor_selection_mirror)
