@@ -8,7 +8,8 @@
 
 This is a small calculator for calculating damage in a
 [pen & paper RPG](https://en.wikipedia.org/wiki/Tabletop_role-playing_game).
-It is also a small experiment to try out client-side web programming with [brython](https://brython.info/).
+It is also a small experiment to try out client-side web programming with [brython](https://brython.info/) and
+system testing with web browser automation using [selenium](https://www.selenium.dev/).
 
 [👉 **Go to the online calculator** 👈](https://klieret.github.io/pp-armor-interaction/index.html)
 
