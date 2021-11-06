@@ -13,7 +13,12 @@ body_parts = {
     "right_leg": "right leg",
 }
 
-armor_types = ["Ls", "Lh", "M", "H"]
+armor_types = {
+    "Ls": "Soft light",
+    "Lh": "Hard light",
+    "M": "Medium",
+    "H": "Heavy",
+}
 
 damage_types = {
     "b": "bludgeoning",

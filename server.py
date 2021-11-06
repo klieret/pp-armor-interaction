@@ -201,7 +201,7 @@ def setup_body_parts():
 
 
 def setup_ignored_armor_types():
-    for armor_type in armor_types:
+    for armor_type, armor_type_desc in armor_types.items():
         _ = document["ignored_armor_types"] <= html.INPUT(
             type="checkbox",
             id=f"ignored_armor_type_{armor_type}",
@@ -210,7 +210,7 @@ def setup_ignored_armor_types():
             checked=False,
         )
         _ = document["ignored_armor_types"] <= html.LABEL(
-            armor_type, **{"for": f"armor_type_{armor_type}"}
+            armor_type_desc, **{"for": f"armor_type_{armor_type}"}
         )
 
 
