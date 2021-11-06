@@ -91,6 +91,24 @@ def test_get_damage(damage_calculator: DamageCalculator):
     )
 
 
+def test_get_damage_ignored_layers(damage_calculator: DamageCalculator):
+    assert (
+        damage_calculator.get_damage(
+            15,
+            "p",
+            8,
+            [ArmorLayer("H", 2), ArmorLayer("M", 1), ArmorLayer("Ls", 2)],
+            ignored_armor_types=["H", "M"],
+        ).value
+        == damage_calculator.get_damage(
+            15,
+            "p",
+            8,
+            [ArmorLayer("Ls", 2)],
+        ).value
+    )
+
+
 def test_get_damage_no_armor(damage_calculator: DamageCalculator):
     assert damage_calculator.get_damage(15, "p", 8, []).value == 15
     assert damage_calculator.get_damage(15, "p", 0, []).value == 15
