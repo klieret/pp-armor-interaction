@@ -6,7 +6,7 @@
                 "Lh",
                 "Ls"
             ],
-            "head": []
+            "head": "empty"
         }
     },
     {
@@ -15,7 +15,7 @@
             "head": [
                 "Ls"
             ],
-            "default": []
+            "default": "empty"
         }
     },
     {
@@ -25,7 +25,7 @@
                 "Lh",
                 "Ls"
             ],
-            "head": []
+            "head": "empty"
         }
     },
     {
@@ -34,13 +34,13 @@
             "head": [
                 "Ls"
             ],
-            "default": []
+            "default": "empty"
         }
     },
     {
         "name": "Helmar's Shield of Meginbald",
         "armor": {
-            "default": [],
+            "default": "empty",
             "body": [
                 "HH"
             ],
@@ -52,7 +52,7 @@
     {
         "name": "Helmar's Padded Breastplate from the Bailiff of Eberfurt",
         "armor": {
-            "default": [],
+            "default": "empty",
             "body": [
                 "HH",
                 "Ls"
@@ -62,7 +62,7 @@
     {
         "name": "Helmar's Warrior Priest Armour",
         "armor": {
-            "head": [],
+            "head": "empty",
             "default": [
                 "M",
                 "LsLs"
@@ -80,7 +80,7 @@
             "head": [
                 "Ls"
             ],
-            "default": []
+            "default": "empty"
         }
     },
     {
@@ -89,7 +89,7 @@
             "default": [
                 "Ls"
             ],
-            "head": []
+            "head": "empty"
         }
     },
     {
@@ -98,13 +98,13 @@
             "default": [
                 "Ls"
             ],
-            "head": []
+            "head": "empty"
         }
     },
     {
         "name": "Naya's thief armour (Hood)",
         "armor": {
-            "default": [],
+            "default": "empty",
             "head": [
                 "Ls"
             ]
@@ -113,7 +113,7 @@
     {
         "name": "Naya's Dwarven Silk Shirt",
         "armor": {
-            "default": [],
+            "default": "empty",
             "right_arm": [
                 "Ls"
             ],

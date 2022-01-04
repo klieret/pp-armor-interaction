@@ -87,9 +87,12 @@ class PredefinedArmorDb:
         """
         with open(path) as inf:
             _armor = json.load(inf)
+        print("Loaded")
         for a in _armor:
             bodypart_to_layers = {}
             for body_part, layer_codes in a["armor"].items():
+                if layer_codes == "empty":
+                    layer_codes = []
                 armor_layers = [
                     ArmorLayer.from_string(lc) for lc in layer_codes
                 ]
