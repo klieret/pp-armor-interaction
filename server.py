@@ -50,7 +50,6 @@ def calculate_damage(ev=None) -> DamageResult:
 
 
 def update_damage(ev=None):
-    print("UPDATING")
     damage = calculate_damage(ev)
     if damage.value is None:
         damage_str = "?"
@@ -129,10 +128,16 @@ def dump_settings_local_storage():
 
 def restore_from_local_storage():
     """Tries to set things as they were last time"""
+    print("Restoring settings from local storage")
     if "main" not in storage:
         print("No local storage settings")
         return
-    settings = json.loads(storage["main"])
+    try:
+        settings = json.loads(storage["main"])
+    except Exception as e:
+        print(f"Couldn't restore settings: {e}. Wiping local storage.")
+        dump_settings_local_storage()
+        return
     print("Restored settings")
     print(storage["main"])
     try:
@@ -142,7 +147,9 @@ def restore_from_local_storage():
             "custom_armor"
         ]
     except Exception as e:
-        print(f"Couldn't restore settings: {e}")
+        print(f"Couldn't restore settings: {e}. Wiping local storage.")
+        dump_settings_local_storage()
+        return
 
 
 def setup_armor_selection():
@@ -231,6 +238,7 @@ def update_penetration_slider(ev=None) -> None:
 
 
 def setup():
+    print("In setup")
     setup_damage_types()
     setup_armor_selection()
     setup_body_parts()
@@ -244,6 +252,7 @@ def setup():
     ]:
         document[part].bind("click", update_damage)
     document["body_part"].bind("click", update_armor_selection_mirror)
+
     for event in ["input", "change"]:
         document["input_damage"].bind(event, update_damage)
         document["input_damage"].bind(event, update_damage_slider)
