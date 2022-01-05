@@ -3,39 +3,39 @@
       default:
           - Lh
           - Ls
-      head: []
+      head: "empty"
 - name: Abu's Assassin Armour (Hood)
   armor:
       head:
         - Ls
-      default: []
+      default: "empty"
 - name: Falatha's Huntress Armour
   armor:
       default:
           - Lh
           - Ls
-      head: []
+      head: "empty"
 - name: Falatha's Huntress Armour (Hood)
   armor:
       head:
         - Ls
-      default: []
+      default: "empty"
 - name: Helmar's Shield of Meginbald
   armor:
-      default: []
+      default: "empty"
       body:
           - HH
       left_arm:
           - HH
 - name: Helmar's Padded Breastplate from the Bailiff of Eberfurt
   armor:
-      default: []
+      default: "empty"
       body:
           - HH
           - Ls
 - name: Helmar's Warrior Priest Armour
   armor:
-      head: []
+      head: "empty"
       default:
           - M
           - LsLs
@@ -47,25 +47,25 @@
   armor:
       head:
         - Ls
-      default: []
+      default: "empty"
 - name: Kal's Padded Mage Robe
   armor:
       default:
           - Ls
-      head: []
+      head: "empty"
 - name: Naya's thief armour
   armor:
       default:
           - Ls
-      head: []
+      head: "empty"
 - name: Naya's thief armour (Hood)
   armor:
-      default: []
+      default: "empty"
       head:
           - Ls
 - name: Naya's Dwarven Silk Shirt
   armor:
-      default: []
+      default: "empty"
       right_arm:
           - Ls
       left_arm:
