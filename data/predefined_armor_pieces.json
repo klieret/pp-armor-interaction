@@ -124,5 +124,17 @@
                 "Ls"
             ]
         }
+    },
+    {
+        "name": "Naya's leg piece",
+        "armor": {
+            "default": "empty",
+            "left_leg": [
+                "Lh"
+            ],
+            "right_leg": [
+                "Lh"
+            ]
+        }
     }
 ]
