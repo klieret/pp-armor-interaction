@@ -57,17 +57,14 @@ def test_armor_layer_serialization():
 
 
 def test_get_armor_layers(armor_db: PredefinedArmorDb):
-    assert (
-        armor_db.get_armor_layers(
-            [
-                "Helmar's Shield of Meginbald",
-                "Helmar's Warrior Priest Armour",
-                "Helmar's Warrior Priest Armour (Padded Cap)",
-            ],
-            body_part="left_arm",
-        )
-        == [ArmorLayer("H", 2), ArmorLayer("M", 1), ArmorLayer("Ls", 2)]
-    )
+    assert armor_db.get_armor_layers(
+        [
+            "Helmar's Shield of Meginbald",
+            "Helmar's Warrior Priest Armour",
+            "Helmar's Warrior Priest Armour (Padded Cap)",
+        ],
+        body_part="left_arm",
+    ) == [ArmorLayer("H", 2), ArmorLayer("M", 1), ArmorLayer("Ls", 2)]
 
 
 def test_get_damage(damage_calculator: DamageCalculator):
