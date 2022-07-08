@@ -6,6 +6,7 @@ import pytest
 from math import fabs
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 
 
 @pytest.fixture(scope="session")
@@ -34,39 +35,39 @@ def session(driver):
 
 
 def get_result(driver) -> str:
-    return driver.find_element_by_id("result").text
+    return driver.find_element(By.ID, "result").text
 
 
 def get_input_damage(driver) -> str:
-    return driver.find_element_by_id("input_damage").get_property("value")
+    return driver.find_element(By.ID, "input_damage").get_property("value")
 
 
 def toggle_armor(driver, armor: str) -> None:
-    driver.find_element_by_id(f"armor_selection_{armor}").click()
+    driver.find_element(By.ID, f"armor_selection_{armor}").click()
 
 
 def toggle_ignored_armor_type(driver, armor: str) -> None:
-    driver.find_element_by_id(f"ignored_armor_type_{armor}").click()
+    driver.find_element(By.ID, f"ignored_armor_type_{armor}").click()
 
 
 def select_damage_type(driver, damage_type: str) -> None:
-    driver.find_element_by_id(f"damage_type_{damage_type}").click()
+    driver.find_element(By.ID, f"damage_type_{damage_type}").click()
 
 
 def select_body_part(driver, body_part: str) -> None:
-    driver.find_element_by_id(f"body_part_{body_part}").click()
+    driver.find_element(By.ID, f"body_part_{body_part}").click()
 
 
 def get_armor_selection_result(driver) -> str:
-    return driver.find_element_by_id("armor_selection_result").text
+    return driver.find_element(By.ID, "armor_selection_result").text
 
 
 def set_custom_armor(driver, armor: str) -> None:
-    driver.find_element_by_id("armor_selection_custom_input").send_keys("LsLs")
+    driver.find_element(By.ID, "armor_selection_custom_input").send_keys("LsLs")
 
 
 def set_int_slider(driver, slider_name: str, target: int) -> None:
-    slider = driver.find_element_by_id(slider_name)
+    slider = driver.find_element(By.ID, slider_name)
     now = int(slider.get_property("value"))
     difference = now - target
     if difference == 0:
@@ -114,7 +115,7 @@ def test_initial_state(session):
     assert get_armor_selection_result(session) == "No layers."
     assert get_input_damage(session) == "10"
     assert (
-        session.find_element_by_id("input_penetration").get_property("value")
+        session.find_element(By.ID, "input_penetration").get_property("value")
         == "0"
     )
     assert get_result(session) == "10"
