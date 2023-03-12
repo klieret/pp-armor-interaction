@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from time import sleep
+
 # 3rd
 from selenium import webdriver
 import pytest
@@ -19,7 +21,9 @@ def driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
     options.add_argument("--headless")
-    return webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
+    driver.implicitly_wait(3)
+    return driver
 
 
 @pytest.fixture
@@ -112,6 +116,7 @@ def test_helmar(session):
 
 
 def test_initial_state(session):
+    sleep(1)
     assert get_armor_selection_result(session) == "No layers."
     assert get_input_damage(session) == "10"
     assert (
