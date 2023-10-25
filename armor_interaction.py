@@ -1,6 +1,5 @@
 from typing import List, Tuple, Dict, NamedTuple, Optional
 import json
-import csv
 
 # todo: use enums
 
@@ -148,11 +147,11 @@ class DamageCalculator:
     ):
         self.armor_weapon_interaction: Dict[Tuple[str, str, int], int] = {}
         with open(armor_interaction_path) as csvfile:
-            reader = csv.reader(csvfile)
-            for irow, row in enumerate(reader):
-                if irow == 0:
+            for iline, line in enumerate(csvfile):
+                if iline == 0:
                     # skip header
                     continue
+                row = [x.strip() for x in line.split(",")]
                 assert len(row) == 4
                 key = (row[0], row[1], int(row[2]))
                 value = int(row[3])
