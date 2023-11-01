@@ -151,6 +151,8 @@ class DamageCalculator:
                 if iline == 0:
                     # skip header
                     continue
+                if not line.split():
+                    continue
                 row = [x.strip() for x in line.split(",")]
                 assert len(row) == 4
                 key = (row[0], row[1], int(row[2]))
