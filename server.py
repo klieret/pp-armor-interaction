@@ -36,9 +36,9 @@ def calculate_damage(ev=None) -> DamageResult:
     if armor_error:
         document["armor_selection_result"].html = armor_error
         return DamageResult(None, armor_error)
-    document[
-        "armor_selection_result"
-    ].html = armor_layers_to_string_representation(armor)
+    document["armor_selection_result"].html = (
+        armor_layers_to_string_representation(armor)
+    )
     assert damage_type
     return damage_calculator.get_damage(
         damage=damage,
